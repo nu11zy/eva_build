@@ -31,16 +31,16 @@ cursor:
 font:
   size: 10
   bold:
-    family: JetBrainsMono Nerd Font
+    family: JetBrains Mono
     style: ExtraBold
   bold_italic:
-    family: JetBrainsMono Nerd Font
+    family: JetBrains Mono
     style: ExtraBold Italic
   italic:
-    family: JetBrainsMono Nerd Font
+    family: JetBrains Mono
     style: Italic
   normal:
-    family: JetBrainsMono Nerd Font
+    family: JetBrains Mono
     style: Regular
 hints:
   enabled:
