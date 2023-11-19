@@ -1,0 +1,16 @@
+- name: "Install fontconfig"
+  become: true
+  ansible.builtin.apt:
+    name: fontconfig
+
+- name: "Install fonts from apt"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - fonts-noto
+      - fonts-noto-cjk
+      - fonts-jetbrains-mono
+
+- name: "Cache fonts"
+  shell: |
+    fc-cache -fv

@@ -8,6 +8,8 @@
       tags: wm_role
     - role: dm
       tags: dm_role
+    - role: fonts
+      tags: fonts_role
     - role: terminal
       tags: terminal_role
     - role: vbox_guest
