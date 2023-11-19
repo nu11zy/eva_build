@@ -10,7 +10,7 @@
 
 - name: Copy alacritty config
   copy:
-    src: "{{ playbook_dir }}/roles/alacritty/files/alacritty.yml"
+    src: "{{ playbook_dir }}/roles/terminal/files/alacritty.yml"
     dest: "{{ ansible_env.HOME }}/.config/alacritty/"
 
 - name: Install zsh and plugins
@@ -23,7 +23,7 @@
 
 - name: Create ~/.zshrc
   copy:
-    src: "{{ playbook_dir }}/roles/zsh/files/.zshrc"
+    src: "{{ playbook_dir }}/roles/terminal/files/.zshrc"
     dest: "{{ ansible_env.HOME }}/"
     mode: 0644
 

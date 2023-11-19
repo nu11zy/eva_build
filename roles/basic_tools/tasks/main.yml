@@ -35,7 +35,7 @@
 - name: Configure network
   become: true
   copy:
-    src: "{{ playbook_dir }}/roles/init/files/interfaces"
+    src: "{{ playbook_dir }}/roles/basic_tools/files/interfaces"
     dest: "/etc/network/interfaces"
 
 - name: Install network-manager
