@@ -12,5 +12,7 @@
       tags: fonts_role
     - role: terminal
       tags: terminal_role
+    - role: qol_tools
+      tags: qol_tools_role
     - role: vbox_guest
       tags: vbox_guest_role

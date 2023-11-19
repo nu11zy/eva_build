@@ -1,0 +1,113 @@
+- name: Appearence
+  tags: appearence
+  become: true
+  ansible.builtin.apt:
+    name:
+      - papirus-icon-theme
+      - gnome-themes-extra-data
+      - lxappearance
+
+- name: Create gtk config directory
+  tags: appearence
+  file:
+    path: "{{ ansible_env.HOME }}/.config/gtk-3.0"
+    state: directory
+
+- name: Configure theme and icons
+  tags: appearence
+  copy:
+    src: "{{ playbook_dir }}/roles/qol_tools/files/settings.ini"
+    dest: "{{ ansible_env.HOME }}/.config/gtk-3.0/"
+
+- name: Thunar
+  tags: thunar
+  become: true
+  ansible.builtin.apt:
+    name:
+      - thunar
+      - file-roller
+
+- name: Pipx + pip3
+  tags: pipx
+  become: true
+  ansible.builtin.apt:
+    name:
+      - pipx
+      - python3-pip
+
+# https://github.com/sharkdp/bat
+- name: Find latest bat
+  tags: bat
+  uri:
+    url: https://api.github.com/repos/sharkdp/bat/releases/latest
+    return_content: true
+  register: bat_latest
+
+- name: Install bat
+  tags: bat
+  become: true
+  loop: "{{ bat_latest.json.assets }}"
+  when: item.name is match("bat_.*_amd64\.deb")
+  ansible.builtin.apt:
+    deb: "{{ item.browser_download_url }}"
+
+# https://github.com/sharkdp/hexyl
+- name: Find latest hexyl
+  tags: hexyl
+  uri:
+    url: https://api.github.com/repos/sharkdp/hexyl/releases/latest
+    return_content: true
+  register: hexyl_latest
+
+- name: Install hexyl
+  tags: hexyl
+  become: true
+  loop: "{{ hexyl_latest.json.assets }}"
+  when: item.name is match("hexyl_.*_amd64\.deb")
+  ansible.builtin.apt:
+    deb: "{{ item.browser_download_url }}"
+
+# https://github.com/junegunn/fzf
+- name: Fzf
+  tags: fzf
+  become: true
+  ansible.builtin.apt:
+    name: fzf
+
+# https://neovim.io/
+- name: Neovim
+  tags: neovim
+  become: true
+  ansible.builtin.apt:
+    name: neovim
+
+- name: Ensures {{ ansible_env.HOME }}/.config/nvim/ dir exists
+  ansible.builtin.shell: |
+    mkdir -p {{ ansible_env.HOME }}/.config/nvim
+
+- name: Configure neovim
+  tags: neovim
+  copy:
+    src: "{{ playbook_dir }}/roles/qol_tools/files/init.vim"
+    dest: "{{ ansible_env.HOME }}/.config/nvim/"
+
+- name: Openvpn
+  tags: Openvpn
+  become: true
+  ansible.builtin.apt:
+    name:
+      - openvpn
+      - network-manager-openvpn-gnome
+
+- name: Wireguard
+  tags: wireguard
+  become: true
+  ansible.builtin.apt:
+    name:
+      - wireguard
+      - resolvconf
+
+- name: Insert multiple lines using Ansible
+  become: true
+  ansible.builtin.shell: |
+    printf "nameserver 8.8.8.8\nnameserver 1.1.1.1\n" >> /etc/resolv.conf
