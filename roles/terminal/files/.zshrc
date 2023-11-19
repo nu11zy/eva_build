@@ -22,7 +22,6 @@ alias egrep="egrep --color=auto"
 alias diff="diff --color=auto"
 alias history="history 0"
 alias hex="hexyl"
-alias bloodhound="bloodhound --in-process-gpu"
 
 # Keybindings
 bindkey ' ' magic-space                           # do history expansion on space
