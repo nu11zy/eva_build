@@ -1,0 +1,32 @@
+- name: Install alacritty
+  become: true
+  ansible.builtin.apt:
+    name: alacritty
+
+- name: Create alacritty config dir
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/alacritty"
+    state: directory
+
+- name: Copy alacritty config
+  copy:
+    src: "{{ playbook_dir }}/roles/alacritty/files/alacritty.yml"
+    dest: "{{ ansible_env.HOME }}/.config/alacritty/"
+
+- name: Install zsh and plugins
+  become: true
+  ansible.builtin.apt:
+    name:
+      - zsh
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+
+- name: Create ~/.zshrc
+  copy:
+    src: "{{ playbook_dir }}/roles/zsh/files/.zshrc"
+    dest: "{{ ansible_env.HOME }}/"
+    mode: 0644
+
+- name: Change shell for user
+  become: true
+  ansible.builtin.shell: usermod --shell /bin/zsh {{ ansible_env.USER }}

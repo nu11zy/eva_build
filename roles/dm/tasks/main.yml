@@ -1,0 +1,21 @@
+- name: Install ly requirements
+  become: true
+  ansible.builtin.apt:
+    name:
+      - libpam0g-dev
+      - libxcb-xkb-dev
+
+- name: Download ly
+  become: true
+  ansible.builtin.git:
+    repo: https://github.com/fairyglade/ly
+    dest: /usr/local/src/ly
+
+- name: Make ly
+  become: true
+  become_method: sudo
+  shell: |
+    cd /usr/local/src/ly
+    make
+    make install installsystemd
+    systemctl enable ly.service

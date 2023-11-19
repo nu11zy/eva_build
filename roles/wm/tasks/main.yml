@@ -1,0 +1,51 @@
+- name: Install dwm requirements
+  become: true
+  ansible.builtin.apt:
+    name:
+      - libx11-dev
+      - libxft-dev
+      - libxinerama-dev
+      - libx11-xcb-dev
+      - libxcb-res0-dev
+  
+- name: Download dwm
+  become: true
+  ansible.builtin.git:
+    repo: https://github.com/nu11zy/dwm-patched
+    dest: /usr/local/src/dwm
+
+- name: Make dwm
+  become: true
+  ansible.builtin.shell: |
+    cd /usr/local/src/dwm
+    make clean install
+
+- name: Ensures /usr/share/xsessions dir exists
+  become: true
+  file: 
+    path: /usr/share/xsessions
+    state: directory
+
+- name: Copy dwm.desktop
+  become: true
+  copy:
+    src: /usr/local/src/dwm/dwm.desktop
+    dest: /usr/share/xsessions/
+
+- name: Create {{ ansible_env.HOME }}/.local/share/dwm directory
+  file: 
+    path: "{{ ansible_env.HOME }}/.local/share/dwm"
+    state: directory
+    recurse: true
+
+- name: Create {{ ansible_env.HOME }}/.local/share/dwm/autostart.sh
+  copy:
+    src: "{{ playbook_dir }}/roles/wm/files/autostart.sh"
+    dest: "{{ ansible_env.HOME }}/.local/share/dwm/"
+    mode: 0755
+
+- name: Create {{ ansible_env.HOME }}/.local/share/dwm/status.sh
+  copy:
+    src: "{{ playbook_dir }}/roles/wm/files/status.sh"
+    dest: "{{ ansible_env.HOME }}/.local/share/dwm/"
+    mode: 0755

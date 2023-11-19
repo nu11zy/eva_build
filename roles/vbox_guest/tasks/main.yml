@@ -1,0 +1,20 @@
+- name: Install Vbox-Guest
+  become: true
+  ansible.builtin.shell: |
+    mkdir /mnt/cdrom
+    mount /dev/cdrom /mnt/cdrom
+    cd /mnt/cdrom
+    sh ./VBoxLinuxAdditions.run --nox11
+    cd /
+    umount -R /mnt/cdrom
+    rm -rf /mnt/cdrom
+    eject
+  ignore_errors: true
+
+- name: Add user to vboxsf group
+  become: true
+  ansible.builtin.shell: usermod -aG vboxsf {{ ansible_env.USER }}
+
+- name: REBOOT!!!
+  debug:
+    msg: Done! Reboot.

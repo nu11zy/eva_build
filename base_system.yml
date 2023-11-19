@@ -1,0 +1,14 @@
+- name: AttackBox initial setup
+  hosts: localhost
+  connection: local
+  roles:
+    - role: basic_tools
+      tags: basic_tools_role
+    - role: wm
+      tags: wm_role
+    - role: dm
+      tags: dm_role
+    - role: terminal
+      tags: terminal_role
+    - role: vbox_guest
+      tags: vbox_guest_role

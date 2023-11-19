@@ -1,0 +1,53 @@
+- name: Fixing time
+  become: true
+  ansible.builtin.shell: |
+    timedatectl set-ntp off
+    timedatectl set-ntp on
+
+- name: Update and upgrade
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+    upgrade: yes
+
+- name: Install essential tools
+  become: true
+  ansible.builtin.apt:
+    name:
+      - git
+      - curl
+      - wget
+      - tmux
+      - nano
+      - unzip
+      - build-essential
+      - dkms
+      - xserver-xorg-core
+      - xserver-xorg-video-vmware
+      - xserver-xorg-input-evdev
+      - x11-xserver-utils
+      - x11-xkb-utils
+      - x11-utils
+      - xinit
+      - dmenu
+
+- name: Configure network
+  become: true
+  copy:
+    src: "{{ playbook_dir }}/roles/init/files/interfaces"
+    dest: "/etc/network/interfaces"
+
+- name: Install network-manager
+  become: true
+  ansible.builtin.apt:
+    name: 
+      - network-manager
+      - network-manager-gnome
+      - resolvconf
+
+- name: Restart networking service
+  become: true
+  ansible.builtin.shell: |
+    systemctl restart networking.service
+    systemctl restart NetworkManager.service
