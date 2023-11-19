@@ -44,7 +44,6 @@
     name: 
       - network-manager
       - network-manager-gnome
-      - resolvconf
 
 - name: Restart networking service
   become: true
